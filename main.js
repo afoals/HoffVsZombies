@@ -1,4 +1,4 @@
-//canvas variables
+$(function() { //canvas variables
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
@@ -147,4 +147,5 @@ $("#start").click(function () {
         continueAnimating = true;
         animate();
     };
+});
 });
