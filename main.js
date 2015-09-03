@@ -113,7 +113,7 @@ $(function() { //canvas variables
 
 	    // draw the background
 	    // (optionally drawImage an image)
-	    ctx.fillStyle = "ivory";
+	    ctx.fillStyle = "rgba(0, 0, 200, 0)";
 	    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	    // draw the block
