@@ -258,4 +258,10 @@ $(function() { //canvas variables
           animate();
       };
   });
+
+  $(".splash").click(function() {
+
+    $(this).hide();
+
+  });
 });
