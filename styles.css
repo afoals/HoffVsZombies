@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  background-color: #de9cb3;
+}
+
+.stuff {
+  background-color: #de9cb3;
+  background-image: url(bg.png);
+  background-repeat: repeat-x;
+  background-position: bottom;
+  background-size: auto 500px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
