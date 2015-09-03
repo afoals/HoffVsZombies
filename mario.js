@@ -56,6 +56,8 @@ $(function(){
   var audioContext;
   var audioBufferLoader;
   var audioBufferList;
+  var ctls = [];
+  var currentSoundCtl = 0;
 
 	var level = {
 		
@@ -276,10 +278,51 @@ if(etop > mtop && etop < mbottom && eleft+2 < mright && eright-2 > mleft){enemy.
 			this.enemyLevel.clearRect(0,0,240,224);
 		},
 
-    setBufferList : function(bufferList) {
-      audioBufferList = bufferList;
-    },
+    startAudio : function(buffers) {
 
+      function createSource(buffer) {
+        var source = audioContext.createBufferSource();
+        var gainNode = audioContext.createGain ? audioContext.createGain() : audioContext.createGainNode();
+        source.buffer = buffer;
+        source.loop = true;
+        source.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        return {
+          source: source,
+          gainNode: gainNode
+        };
+      };
+      ctls.push(createSource(buffers[0]));
+      ctls.push(createSource(buffers[1]));
+      ctls.push(createSource(buffers[2]));
+      ctls.push(createSource(buffers[3]));
+
+      ctls[1].gainNode.gain.value = 0;
+      ctls[2].gainNode.gain.value = 0;
+      ctls[3].gainNode.gain.value = 0;
+
+      // Start playback in a loop
+      if (!ctls[0].source.start) {
+        ctls[0].source.noteOn(0);
+        ctls[1].source.noteOn(0);
+        ctls[2].source.noteOn(0);
+        ctls[3].source.noteOn(0);
+      } else {
+        ctls[0].source.start(0);
+        ctls[1].source.start(0);
+        ctls[2].source.start(0);
+        ctls[3].source.start(0);
+      }
+      //audioBufferList = bufferList;
+
+      //var source = audioContext.createBufferSource();
+      //source.buffer = audioBufferList[0];
+      //source.connect(audioContext.destination);
+      //source.loop = true;
+      //source.start(0);
+    },
+		
 		init : function(){
 			console.log("START");
 			var z = this;
@@ -289,8 +332,8 @@ if(etop > mtop && etop < mbottom && eleft+2 < mright && eright-2 > mleft){enemy.
       audioContext = new AudioContext();
       audioBufferLoader = new BufferLoader(
         audioContext,
-        ['samples/skrillex2.wav'],
-        this.setBufferList);
+        ['samples/axel-1-drum.mp3', 'samples/axel-2-bass.mp3', 'samples/axel-3-beat.mp3', 'samples/axel-4-tune.mp3'],
+        this.startAudio);
       audioBufferLoader.load();
 			
 			$.getJSON("objects.json", function(json){
@@ -470,13 +513,6 @@ if(cf == 10){z.set({currentFrame : 1});}
 			}
 		},
 
-    playSound : function() {
-      var source = audioContext.createBufferSource();
-      source.buffer = audioBufferList[0];
-      source.connect(audioContext.destination);
-      source.start(0);
-    },
-		
 		jump : function(){
 			var z = this,
 			curH = z.get('currentHeight'),
@@ -516,7 +552,6 @@ if(cf == 10){z.set({currentFrame : 1});}
 				}
 				
 			}
-			this.playSound();
 		},
 		bounce : function() {
 		  var z = this;
@@ -725,6 +760,14 @@ if(cf == 10){z.set({currentFrame : 1});}
 			}
 		},
 		hit : function(){
+      if (currentSoundCtl < 3) {
+        currentSoundCtl++;
+        console.log('incrementing sound ctl', currentSoundCtl);
+        ctls[currentSoundCtl].gainNode.gain.value = 1;
+      } else {
+        console.log('max sound ctl');
+      }
+
 			var z = this;
 			z.set({'currentSX': z.DEAD, 'active':false, 'dying':true});
 			z.currentFrame = 1;
