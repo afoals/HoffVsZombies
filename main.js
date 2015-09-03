@@ -50,7 +50,7 @@ $(function() { //canvas variables
   var ctx = canvas.getContext("2d");
 
   // game variables
-  var startingScore = 50;
+  var startingScore = 0;
   var continueAnimating = false;
   var score;
 
@@ -173,7 +173,7 @@ $(function() { //canvas variables
 
           // test for rock-block collision
           if (isColliding(rock, block)) {
-              score -= 10;
+              score += 10;
               resetRock(rock);
               hitCount++;
               if (hitCount == 5) {
