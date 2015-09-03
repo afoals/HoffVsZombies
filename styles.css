@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  background-color: #de9cb3;
+}
+
+.stuff,
+#canvas {
+  background-color: #de9cb3;
+  background-image: url(bg.png);
+  background-repeat: repeat-x;
+  background-position: bottom;
+  background-size: auto 500px;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+#start {
+  z-index: 4;
+  position: fixed;
+}
